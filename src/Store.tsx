@@ -106,6 +106,10 @@ const reducer = (
       };
     }
 
+    case "DESELECT": {
+      return { ...state, selected: [] as [] };
+    }
+
     case "SET_SELECTED_FIELD_VALUE": {
       const { payload: newValue } = action;
 

@@ -34,6 +34,9 @@ export default function Game({ state, dispatch }: Game) {
   const getIsEditable = (pos: Position): boolean =>
     bkPlayerSudoku[pos[0]][pos[1]] === 0;
 
+  // Deselect - sets selected to intial value
+  const deselect = (): void => dispatch({ type: "DESELECT" });
+
   // Set selected Field
   const setSelected = (pos: Position): void =>
     dispatch({ type: "SELECT_FIELD", payload: pos });
@@ -76,8 +79,8 @@ export default function Game({ state, dispatch }: Game) {
 
   // Handle keyboard input
   const handleOnKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    // Return if no field is selected
-    if (!selected || !selected.length) return;
+    // Return if no field is selected and fast mode is disabled
+    if ((!selected || !selected.length) && !fastModeEnabled) return;
 
     // Handle erasing field
     if (e.code === "Backspace") eraseSelected();
@@ -87,8 +90,11 @@ export default function Game({ state, dispatch }: Game) {
 
     const newVal = Number(e.key);
 
+    // if fast mode is on - set active number to pressed key number and deselect the selected field
     if (fastModeEnabled) {
       setFastModeNum(newVal);
+      deselect();
+      return;
     }
 
     setSelectedFieldValue(newVal);
@@ -128,6 +134,7 @@ export default function Game({ state, dispatch }: Game) {
 
         <Controls
           controlsDisabled={isSolved || showMenu || showPausedMenu}
+          deselect={deselect}
           setSelectedFieldValue={setSelectedFieldValue}
           eraseSelected={eraseSelected}
           resetSudoku={resetSudoku}

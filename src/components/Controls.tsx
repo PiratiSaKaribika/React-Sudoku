@@ -36,6 +36,7 @@ function NumpadButton({
 
 interface ControlsProps {
   controlsDisabled: boolean;
+  deselect: Function;
   setSelectedFieldValue: Function;
   eraseSelected: Function;
   resetSudoku: Function;
@@ -47,6 +48,7 @@ interface ControlsProps {
 }
 export default function Controls({
   controlsDisabled,
+  deselect,
   setSelectedFieldValue,
   eraseSelected,
   resetSudoku,
@@ -65,10 +67,14 @@ export default function Controls({
   ) => {
     e.preventDefault();
 
+    // if fast mode is on - set active number to numpad number and deselect the selected field
     if (fastModeEnabled) {
       setFastModeNum(newValue);
+      deselect();
+      return; // prevent from setting the selected value
     }
 
+    // if not, set the selected field to numpad number
     setSelectedFieldValue(newValue);
   };
 

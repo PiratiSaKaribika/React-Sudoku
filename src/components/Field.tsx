@@ -41,10 +41,13 @@ export default function Field({
         ? "#155dfc"
         : isSameNum
           ? "#8EC5FF"
-          : isHighlighted
+          : isHighlighted ||
+              (fastModeEnabled && fastModeNum === num && num !== 0)
             ? "#D3E5FE"
             : "unset",
   };
+
+  // const styleObj = {};
 
   const handleClick = () => {
     setSelected([row, col]);
