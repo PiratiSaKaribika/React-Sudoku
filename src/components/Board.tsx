@@ -23,7 +23,7 @@ interface BoardProps {
   setDifficulty: Function;
   togglePause: Function;
   resetState: Function;
-  handleOnKeyDown: React.KeyboardEventHandler<HTMLInputElement>;
+  // handleOnKeyDown: React.KeyboardEventHandler<HTMLInputElement>;
   toggleFastMode: React.ChangeEventHandler<HTMLInputElement>;
 }
 
@@ -43,7 +43,6 @@ export default function Board({
   setDifficulty,
   togglePause,
   resetState,
-  handleOnKeyDown,
   toggleFastMode,
 }: BoardProps) {
   const getIsHighlighted = (pos: Position) => {
@@ -120,7 +119,6 @@ export default function Board({
                   fastModeNum={fastModeNum}
                   setSelected={setSelected}
                   setSelectedFieldValue={setSelectedFieldValue}
-                  handleOnKeyDown={handleOnKeyDown}
                 />
               )),
             )

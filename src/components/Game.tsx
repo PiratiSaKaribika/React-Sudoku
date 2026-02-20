@@ -1,3 +1,5 @@
+import { useEffect, useRef } from "react";
+
 // Components
 import GameHeader from "./GameHeader";
 import Board from "./Board";
@@ -24,6 +26,12 @@ export default function Game({ state, dispatch }: Game) {
     isPaused,
     time,
   } = state;
+
+  // Variables used in keydown event handler
+  const keydownHandlerDependancyVariables = useRef({
+    selected,
+    fastModeEnabled,
+  });
 
   const showMenu = isSolved || !difficulty;
   const showPausedMenu = isPaused;
@@ -77,28 +85,44 @@ export default function Game({ state, dispatch }: Game) {
 
   const resetState = (): void => dispatch({ type: "RESET_STATE" });
 
-  // Handle keyboard input
-  const handleOnKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    // Return if no field is selected and fast mode is disabled
-    if ((!selected || !selected.length) && !fastModeEnabled) return;
+  // upate keydown handler dependancy variables when they change
+  useEffect(() => {
+    keydownHandlerDependancyVariables.current = { selected, fastModeEnabled };
+  }, [selected, fastModeEnabled]);
 
-    // Handle erasing field
-    if (e.code === "Backspace") eraseSelected();
+  useEffect(() => {
+    // Handle keyboard input
+    const handleOnKeyDown = (e: KeyboardEvent) => {
+      const { selected, fastModeEnabled } =
+        keydownHandlerDependancyVariables.current;
 
-    // Return if key is not 1-9
-    if (!e.code.startsWith("Digit") || e.code === "Digit0") return;
+      // Return if no field is selected and fast mode is disabled
+      if ((!selected || !selected.length) && !fastModeEnabled) return;
 
-    const newVal = Number(e.key);
+      // Handle erasing field
+      if (e.code === "Backspace") eraseSelected();
 
-    // if fast mode is on - set active number to pressed key number and deselect the selected field
-    if (fastModeEnabled) {
-      setFastModeNum(newVal);
-      deselect();
-      return;
-    }
+      // Return if key is not 1-9
+      if (!e.code.startsWith("Digit") || e.code === "Digit0") return;
 
-    setSelectedFieldValue(newVal);
-  };
+      const newVal = Number(e.key);
+
+      // if fast mode is on - set active number to pressed key number and deselect the selected field
+      if (fastModeEnabled) {
+        setFastModeNum(newVal);
+        deselect();
+        return;
+      }
+
+      setSelectedFieldValue(newVal);
+    };
+
+    // Attach keyboard event listener
+    window.addEventListener("keydown", handleOnKeyDown);
+
+    // Remove event listener on component unmount
+    return () => window.removeEventListener("keydown", handleOnKeyDown);
+  }, []);
 
   return (
     <div className="w-240 mx-auto tablet:max-w-[95%] phone:max-w-[90%] phone-sm:max-w-[95%]">
@@ -128,7 +152,6 @@ export default function Game({ state, dispatch }: Game) {
           setDifficulty={setDifficulty}
           togglePause={togglePause}
           resetState={resetState}
-          handleOnKeyDown={handleOnKeyDown}
           toggleFastMode={toggleFastMode}
         />
 

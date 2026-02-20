@@ -11,7 +11,6 @@ interface Field {
   fastModeNum: number;
   setSelected: Function;
   setSelectedFieldValue: Function;
-  handleOnKeyDown: React.KeyboardEventHandler<HTMLInputElement>;
 }
 
 export default function Field({
@@ -27,7 +26,6 @@ export default function Field({
   fastModeNum,
   setSelected,
   setSelectedFieldValue,
-  handleOnKeyDown,
 }: Field) {
   const style = {
     borderBottom: row >= 2 && (row + 1) % 3 === 0 ? "3px solid #25282E" : "",
@@ -46,8 +44,6 @@ export default function Field({
             ? "#D3E5FE"
             : "unset",
   };
-
-  // const styleObj = {};
 
   const handleClick = () => {
     setSelected([row, col]);
@@ -69,7 +65,6 @@ export default function Field({
         className="w-full h-full text-xl text-center text-inherit focus:caret-transparent"
         readOnly
         value={num === 0 ? "" : num}
-        onKeyDown={handleOnKeyDown}
       />
     </div>
   );
