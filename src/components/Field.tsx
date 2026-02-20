@@ -27,23 +27,24 @@ export default function Field({
   setSelected,
   setSelectedFieldValue,
 }: Field) {
-  const style = {
-    borderBottom: row >= 2 && (row + 1) % 3 === 0 ? "3px solid #25282E" : "",
-    borderRight: col >= 2 && (col + 1) % 3 === 0 ? "3px solid #25282E" : "",
-    borderRadius: col === 8 && row === 8 ? "0 0 4px 0" : "",
-    color: isSelected ? "#eff6ff" : isEditable ? "#0b4ee0" : "",
-    fontWeight: isSelected ? "bold" : "unset",
-    background: isIncorrect
-      ? "#e00b32"
+  // Dynamically calculate tailwind classes to apply
+  const dynamicTwClassNamesArr = [
+    row >= 2 && (row + 1) % 3 === 0 ? "border-b-[3px] border-gray-800" : "", // border bottom
+    col >= 2 && (col + 1) % 3 === 0 ? "border-r-[3px] border-gray-800" : "", // border right
+    col === 8 && row === 8 ? "rounded-br" : "", // border radius
+    isSelected ? "text-primary-100" : isEditable ? "text-primary-700" : "", // color
+    isSelected ? "font-bold" : "", // font weight,
+    isIncorrect // background color
+      ? "bg-incorrect"
       : isSelected
-        ? "#155dfc"
-        : isSameNum
-          ? "#8EC5FF"
-          : isHighlighted ||
-              (fastModeEnabled && fastModeNum === num && num !== 0)
-            ? "#D3E5FE"
-            : "unset",
-  };
+        ? "bg-primary-600"
+        : isSameNum || (fastModeEnabled && fastModeNum === num && num !== 0)
+          ? "bg-primary-300"
+          : isHighlighted
+            ? "bg-primary-250"
+            : "bg-unset",
+  ];
+  const dynamicTwClassNames = dynamicTwClassNamesArr.join(" ");
 
   const handleClick = () => {
     setSelected([row, col]);
@@ -56,8 +57,7 @@ export default function Field({
 
   return (
     <div
-      style={style}
-      className="w-[calc(100%/9)] aspect-square border border-gray-700 flex justify-center items-center"
+      className={`w-[calc(100%/9)] aspect-square border border-gray-700 flex justify-center items-center ${dynamicTwClassNames}`}
       onClick={handleClick}
     >
       <input
