@@ -7,7 +7,7 @@ export default function Header() {
         <a
           className="flex gap-x-2 hover:[&>h5]:text-gray-600 hover:[&_svg]:text-gray-500"
           target="_blank"
-          href="https://www.github.com/gruyovich"
+          href="https://www.github.com/gruyovich/React-Sudoku"
         >
           <span className="w-8 h-8 phone:w-12 phone:h-12 phone-sm:w-10 phone-sm:h-10">
             <FaGithub className="text-gray-600" />
