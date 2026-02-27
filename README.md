@@ -22,7 +22,7 @@ Offline sudoku made entirely in React. Includes a random sudoku generator alongs
 <!-- start:code block -->
 ## Clone this repository
 ```shell
-git clone https://github.com/PiratiSaKaribika/React-Sudoku.git
+git clone https://github.com/gruyovich/React-Sudoku.git
 ```
 
 ## Build the image
@@ -42,7 +42,7 @@ docker run -p {your_port}:80 react-sudoku
 <!-- start:code block -->
 ## Clone this repository
 ```shell
-git clone https://github.com/PiratiSaKaribika/React-Sudoku.git
+git clone https://github.com/gruyovich/React-Sudoku.git
 ```
 
 ## Install dependencies
